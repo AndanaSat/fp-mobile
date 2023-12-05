@@ -73,6 +73,8 @@ app.get('/api/test', (req, res) => {
     });
 });
 
+
+// Testing
 app.post('/api/test', (req, res) => {
     const uid = req.body.uid;
     const distance = req.body.distance;
@@ -91,30 +93,47 @@ app.post('/api/test', (req, res) => {
     });
 });
 
-app.get('/api/tracking', (req, res) => {
-    const sql = `SELECT * FROM tracking`;
-    const query = db.query(sql, (err, result) => {
-      if (err) {
-        console.log(err);
-        res.status(500).send('Internal server error');
-      }
-  
-      res.status(200).send(result);
-    });
+// Testing
+app.post('/api/test', (req, res) => {
+  const uid = req.body.uid;
+  const distance = req.body.distance;
+  const timer = req.body.timer;
+
+  const sql = `INSERT INTO tes (uid, distance, timer) VALUES (?, ?, ?)`;
+  const query = db.query(sql, [uid, distance, timer]);
+
+  query.on('error', (err) => {
+    console.log(err);
+    res.status(500).send('Internal server error');
+  });
+
+  query.on('end', () => {
+    res.status(200).send('Data tracking berhasil disimpan');
+  });
 });
 
-app.post('/api/image', (req, res) => {
+app.get('/api/tracking', (req, res) => {
+  const sql = `SELECT * FROM tracking`;
+  const query = db.query(sql, (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send('Internal server error');
+    }
+
+    res.status(200).send(result);
+  });
+});
+
+app.post('/api/tracking', (req, res) => {
     const uid = req.body.uid;
-    // const dataTracking = req.body.dataTracking;
+    const distance = req.body.distance;
+    const timer = req.body.timer;
     const image = req.body.image;
   
     const base64Image = Buffer.from(image, 'base64');
   
-    // const sql = `INSERT INTO tracking_data (uid, data_tracking, image) VALUES (?, ?, ?)`;
-    // const query = db.query(sql, [uid, dataTracking, base64Image]);
-  
-    const sql = `INSERT INTO tracking (uid, image) VALUES (?, ?)`;
-    const query = db.query(sql, [uid, base64Image]);
+    const sql = `INSERT INTO tracking (uid, distance, timer, image) VALUES (?, ?, ?, ?)`;
+    const query = db.query(sql, [uid, distance, timer, base64Image]);
 
     query.on('error', (err) => {
       console.log(err);
