@@ -103,14 +103,17 @@ app.post('/api/test', (req, res) => {
 });
 
 app.get('/api/tracking', (req, res) => {
-  const sql = `SELECT * FROM tracking`;
-  const query = db.query(sql, (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send('Internal server error');
-    }
+  const uid = req.body.uid;
+  const sql = `SELECT distance, timer, image FROM tracking WHERE uid==(?)`;
+  const query = db.query(sql, [uid]);
 
-    res.status(200).send(result);
+  query.on('error', (err) => {
+    console.log(err);
+    res.status(500).send('Internal server error');
+  });
+
+  query.on('end', () => {
+    res.status(200).send('Data tracking berhasil disimpan');
   });
 });
 
