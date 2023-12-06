@@ -51,15 +51,6 @@ const db = mysql.createPool({
     password: 'code01',
     database: 'mobile',
   });
-  
-  // db.connect((err) => {
-  //   if (err) {
-  //     console.log(err);
-  //     process.exit(1);
-  //   }
-  
-  //   console.log('Database connected');
-  // });
 
 app.get('/api/test', (req, res) => {
     const sql = `SELECT * FROM tes`;
@@ -72,7 +63,6 @@ app.get('/api/test', (req, res) => {
       res.status(200).send(result);
     });
 });
-
 
 // Testing
 app.post('/api/test', (req, res) => {
@@ -124,6 +114,7 @@ app.get('/api/tracking', (req, res) => {
   });
 });
 
+// Post Data Tracking
 app.post('/api/tracking', (req, res) => {
     const uid = req.body.uid;
     const distance = req.body.distance;
