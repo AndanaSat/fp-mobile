@@ -122,12 +122,12 @@ app.post('/api/tracking', (req, res) => {
     const uid = req.body.uid;
     const distance = req.body.distance;
     const timer = req.body.timer;
-    const image = req.body.image;
+    const { blobData } = req.body.image;
   
-    const base64Image = Buffer.from(image, 'base64');
+    // const base64Image = Buffer.from(image, 'base64');
   
     const sql = `INSERT INTO tracking (uid, distance, timer, image) VALUES (?, ?, ?, ?)`;
-    const query = db.query(sql, [uid, distance, timer, base64Image]);
+    const query = db.query(sql, [uid, distance, timer, { blobData }]);
 
     query.on('error', (err) => {
       console.log(err);
