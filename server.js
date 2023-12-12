@@ -37,11 +37,13 @@ app.post("/api/login", async(req, res) => {
         const user = userCredential.user;
         const uid = user.uid;
         res.send(uid);
+	console.log(uid);
     })
     .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         res.send("error").json({errorCode: errorCode, errorMessage: errorMessage});
+	console.log("error");
     });
 })
 
@@ -122,20 +124,22 @@ app.post('/api/tracking', (req, res) => {
     const uid = req.body.uid;
     const distance = req.body.distance;
     const timer = req.body.timer;
-    const { blobData } = req.body.image;
-  
+    const image = req.body.image;
+
     // const base64Image = Buffer.from(image, 'base64');
-  
+
     const sql = `INSERT INTO tracking (uid, distance, timer, image) VALUES (?, ?, ?, ?)`;
-    const query = db.query(sql, [uid, distance, timer, { blobData }]);
+    const query = db.query(sql, [uid, distance, timer, image]);
 
     query.on('error', (err) => {
-      console.log(err);
+      console.log("terjadi error");
       res.status(500).send('Internal server error');
+      console.log(err);
     });
-  
+
     query.on('end', () => {
       res.status(200).send('Data tracking berhasil disimpan');
+      console.log("data berhasil disimpan")
     });
 });
 
